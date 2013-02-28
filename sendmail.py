@@ -9,7 +9,7 @@ import os
 import getpass
 import sys
 
-gmail_user = "manoj.p.gudi@gmail.com"
+gmail_user = "your_email@gmail.com"
 gmail_pwd = '' # Will  be fetched from user runtime
 
 def getMultilineInput(): #For mail body.
@@ -21,13 +21,16 @@ def getMultilineInput(): #For mail body.
    body = '\n'.join(body)
    return body
 
-def mail(to, subject, text, attach):
+def mail(to, subject, html,attach):
    msg = MIMEMultipart()
    gmail_pwd = getpass.getpass(stream=sys.stderr)
    msg['From'] = gmail_user
    msg['To'] = to
    msg['Subject'] = subject
-   msg.attach(MIMEText(text))
+
+   part = MIMEText(html, 'html')
+
+   msg.attach(part)
    if attach!="":
        msg.attach(MIMEText(text))
    
@@ -50,11 +53,25 @@ def mail(to, subject, text, attach):
    except :
        print 'Failure!'
 print '\nFrom:',gmail_user
-to = raw_input('To: ')
-subject = raw_input('Subject: ')
-body = getMultilineInput()
+
+to = 'recipient@anymail.com'
+subject = 'testing html python gmail'
+html = getMultilineInput()
 
 mail(to,
    subject,
-   body,
+   html,
    "")
+
+##Sample HTML
+##html = """\
+##<html>
+##  <head></head>
+##  <body>
+##    <p>Hi!<br>
+##       How are you?<br>
+##       Here is the <a href="http://www.python.org">link</a> you wanted.
+##    </p>
+##  </body>
+##</html>
+##"""
